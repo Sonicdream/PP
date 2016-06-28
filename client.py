@@ -12,28 +12,45 @@ sock.connect(('localhost', 9521))
 nickName = input('input your nickname: ')
 sock.send(nickName.encode())
 
-temp = 0
-first = 0
+#temp = 0
+#first = 0
 
+
+def client():
+    th2 = threading.Thread(target=recvThreadFunc)
+    th2.setDaemon(True)
+    th2.start()
 
 
 def recvThreadFunc():
     while True:
-        global temp
-        otherword = sock.recv(1024)
-        word = otherword.decode()
-        print(word)
-        if word != 'same':
-            game_output.insert(END,word + " Win\n")
- 
-        else:
-            game_output.insert(END,"Same power\n") 
+       # global temp
+        try:
+            otherword = sock.recv(1024)
+            if otherword:
+                word = otherword.decode()
+                if word[0] == '@':  #  receive  game msg
+                    print(word)
+                    if word != '@same':
+                        game_output.insert(END,word[1:] + " Win\n") 
+                    else:
+                        game_output.insert(END,"Same power\n") 
 
-def sendThreadFunc():
-    if first == 1:
-        global temp
-        print(temp)
-        sock.send(temp.encode())
+                else:  # receive talk msg
+                    msg = 'Others say: '+ word
+                    talk_output.insert(END,msg)
+
+            else:
+                pass
+            
+        except ConnectionResetError:
+            print('Server is closed!')        
+
+#def sendgame():
+   # if first == 1:
+#    global temp
+#    print(temp)
+#    sock.send(temp.encode())
   
 
 
@@ -48,33 +65,42 @@ def sendpaper():
     content = '@Par'
     Pcontent = "You use Par: "
     game_output.insert(END,Pcontent)
-    global temp
-    temp = content
-    sendThreadFunc()
+   # global temp
+   # temp = content
+    sock.send(content.encode())
+   # sendgame()
 
 
 def sendscissors():
     content = '@Cut'
     Pcontent = "You use Cut: "
     game_output.insert(END,Pcontent)
-    global temp
-    temp  = content
-    sendThreadFunc()
+   # global temp
+   # temp  = content
+    sock.send(content.encode())
+   # sendgame()
 
 def sendstone():
     content = '@Sto'
     Pcontent = "You use Sto: "
     game_output.insert(END,Pcontent)
-    global temp
-    temp = content
-    sendThreadFunc()
+   # global temp
+   # temp = content
+    sock.send(content.encode())
+   # sendgame()
 
 
 def sendmsg():
     msgcontent = 'I say: '
     talk_output.insert(END, msgcontent)
     talk_output.insert(END, talk_input.get('0.0', END))
+
+    sock.send(talk_input.get('0.0', END).encode()) # send talk msg
+
     talk_input.delete('0.0', END)
+
+
+client() # client
 
 #GUI
 root = Tk()
@@ -121,14 +147,14 @@ talk_input.grid()
 talk_send.grid()
 
 
-th1 = threading.Thread(target=sendThreadFunc)
-th2 = threading.Thread(target=recvThreadFunc)
+#th1 = threading.Thread(target=sendThreadFunc)
+#th2 = threading.Thread(target=recvThreadFunc)
 #threads = [th2]
-threads = [th1, th2]
+#threads = [th1, th2]
 
-th1.start()
-th2.start()
-first = 1
+#th1.start()
+#th2.start()
+#first = 1
 
 root.mainloop()
 

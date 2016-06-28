@@ -87,9 +87,9 @@ def subThreadIn(myconnection, connNumber):
                        if result != 2:
                            
                            print(gamelist[result])
-                           tellAll(connNumber, gamelist[result])
+                           tellAll(connNumber, '@'+ gamelist[result])
                        else:
-                           tellAll(connNumber, 'same')    
+                           tellAll(connNumber, '@same')    
                        gamelist.pop(0)
                        gamelist.pop(0)    
                        gamedict.popitem()
