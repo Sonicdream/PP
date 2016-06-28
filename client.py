@@ -31,10 +31,15 @@ def recvThreadFunc():
                 word = otherword.decode()
                 if word[0] == '@':  #  receive  game msg
                     print(word)
+                    game_output.delete('0.0', END)
                     if word != '@same':
                         game_output.insert(END,word[1:] + " Win\n") 
                     else:
-                        game_output.insert(END,"Same power\n") 
+                        game_output.insert(END,"Same power\n")
+                elif word[0] == '#':
+                    print(word[1:])
+                    game_output.insert(END,word[1:] + "\n")
+                    print('==============')         
 
                 else:  # receive talk msg
                     msg = 'Others say: '+ word
