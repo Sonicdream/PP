@@ -15,10 +15,10 @@ nameToscore = dict()  # record the play's score
 
 getPoint = 0
 gamePoint = [0,0]
-gamePicture = ['0',' ','0',' ','0',' ','0','\n',
-               '0',' ','0',' ','0',' ','0','\n',
-               '0',' ','0',' ','0',' ','0','\n',
-               '0',' ','0',' ','0',' ','0','\n']
+gamePicture = ['0','    ','0','    ','0','    ','0','\n',
+               '0','    ','0','    ','0','    ','0','\n',
+               '0','    ','0','    ','0','    ','0','\n',
+               '0','    ','0','    ','0','    ','0','\n']
 
 gameToString = ''
 
@@ -199,9 +199,10 @@ def subThreadIn(myconnection, connNumber):
                            for i in range(0, len(gamelist), +1):
                                if gamelist[i] == result:
                                    tellAll(connNumber, '@'+ gamelist[i])
-                                   time.sleep(1) 
+                                   time.sleep(0.25) 
                                    tellAll(connNumber, '#'+ gameToString)
-                                   time.sleep(1)
+                                  # time.sleep(2)  
+                                  # time.sleep(1)
 
                            # game is over 
                            if nameToscore[result] >= 15:
@@ -211,7 +212,7 @@ def subThreadIn(myconnection, connNumber):
                                       
 
                                for i in range(0, len(gamePicture), +1): # reset source picture
-                                   if gamePicture[i] != '0' and gamePicture[i] != ' ' and gamePicture[i] != '\n' :
+                                   if gamePicture[i] != '0' and gamePicture[i] != '    ' and gamePicture[i] != '\n' :
                                        gamePicture[i] = '0'                                
 
                                

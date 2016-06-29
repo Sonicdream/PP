@@ -15,6 +15,18 @@ sock.send(nickName.encode())
 #temp = 0
 #first = 0
 
+def btnDisable():
+    game_paper['state'] = 'disable'
+    game_scissors['state'] = 'disable'
+    game_stone['state'] = 'disable'
+
+def btnEnable():
+    game_paper['state'] = 'normal'
+    game_scissors['state'] = 'normal'
+    game_stone['state'] = 'normal'
+
+
+
 
 def client():
     th2 = threading.Thread(target=recvThreadFunc)
@@ -37,8 +49,15 @@ def recvThreadFunc():
                     else:
                         game_output.insert(END,"Same power\n")
                 elif word[0] == '#':
-                    print(word[1:])
-                    game_output.insert(END,word[1:] + "\n")
+                    game_output.insert(END, "\n\n\n\n\n")
+                    
+                    
+                    for i in range(1,66,+17):                             
+                        game_output.insert(END, "                           "+word[i:i+17]+"\n" )
+
+                    time.sleep(2.5)
+                    btnEnable()  # open button
+
                     print('==============')         
 
                 else:  # receive talk msg
@@ -67,6 +86,7 @@ def recvThreadFunc():
 
 
 def sendpaper():
+    btnDisable()
     content = '@Par'
     Pcontent = "You use Par: "
     game_output.insert(END,Pcontent)
@@ -77,6 +97,7 @@ def sendpaper():
 
 
 def sendscissors():
+    btnDisable()
     content = '@Cut'
     Pcontent = "You use Cut: "
     game_output.insert(END,Pcontent)
@@ -86,6 +107,7 @@ def sendscissors():
    # sendgame()
 
 def sendstone():
+    btnDisable()
     content = '@Sto'
     Pcontent = "You use Sto: "
     game_output.insert(END,Pcontent)
